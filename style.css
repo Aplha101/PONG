@@ -50,6 +50,11 @@ canvas {
 
 button {
   border: none;
+  padding:10px;
+  height:70px;
+  width:70px;
+  text-align: center;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
 #p2up {
