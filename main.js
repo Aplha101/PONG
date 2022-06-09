@@ -98,18 +98,14 @@ class ball {
     var dy = distY - 80 / 2;
     return (dx * dx + dy * dy <= (10 * 10));
   }
-  
+
 }
 
 let Ball = new ball(area.width / 2, area.height / 2, "#fff")
 
 let Player1 = new paddle(20, area.height / 2)
 
- p1up.onclick((e) => {Player1.ysp = -1})
- p2up.onclick((e) => {Player2.ysp = -1})
- p1down.onclick((e)=> {Player1.ysp = 1})
- p2down.onclick((e) => {Player1.ysp = 1})
- 
+
 let Player2 = new paddle(area.width - 30, area.height / 2)
 
 function clearAll() {
@@ -128,9 +124,8 @@ setInterval(() => {
   if (Ball.cornerCollision(Player1, Player2)) {
     Ball.xsp *= -1
   }
-  Player1.update()
   Player1.draw()
-
+  Player1.update()
   Player2.update()
   Player2.draw()
 })
