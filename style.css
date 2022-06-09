@@ -42,19 +42,19 @@ p {
 }
 
 canvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: block;
+  max-width: 100%;
+  margin: auto;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
 button {
-  padding-bottom: 10px;
   border: none;
-  height: 100%;
-  outline: none;
-  width: 100%;
-  background: transparent;
-  text-align: center;
+}
+
+#p2up {
+  float: right;
+}
+#p2down {
+  float: right;
 }
