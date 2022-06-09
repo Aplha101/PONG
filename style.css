@@ -63,3 +63,8 @@ button {
 #p2down {
   float: right;
 }
+
+.block {
+  display: block;
+  min-height: 150px;
+}
