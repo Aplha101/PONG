@@ -3,6 +3,10 @@ const html = document.getElementById('html')
 const p1 = document.getElementById('p1')
 const p2 = document.getElementById("p2")
 let ctx = area.getContext('2d')
+const p1up = document.getElementById('p1up')
+const p2up = document.getElementById('p2up')
+const p1down = document.getElementById('p1down')
+const p2down = document.getElementById('p2down')
 
 area.style = "background:#556479;"
 
@@ -94,11 +98,18 @@ class ball {
     var dy = distY - 80 / 2;
     return (dx * dx + dy * dy <= (10 * 10));
   }
+  
 }
 
 let Ball = new ball(area.width / 2, area.height / 2, "#fff")
 
 let Player1 = new paddle(20, area.height / 2)
+
+ p1up.onclick((e) => {Player1.ysp = -1})
+ p2up.onclick((e) => {Player2.ysp = -1})
+ p1down.onclick((e)=> {Player1.ysp = 1})
+ p2down.onclick((e) => {Player1.ysp = 1})
+ 
 let Player2 = new paddle(area.width - 30, area.height / 2)
 
 function clearAll() {
