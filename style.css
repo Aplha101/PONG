@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200&family=Pacifico&display=swap');
+body {
+    font-size: 15pt;
+}
+html , body{
+  height:100%;
+  width:100%;
+}
+*{
+  padding:0;
+  margin:0;
+  box-sizing:border-box;
+}
+div{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+  height:100px;
+  width:100%;
+  position: absolute;
+}
+p{
+  font-family: 'Inconsolata', monospace;
+  padding : 20px;
+  font-size:40px;
+}
+.p1{
+  margin-left:10px;
+}
+.p2{
+  margin-right:10px;
+}
+
+canvas{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50% , -50%);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
