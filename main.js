@@ -45,7 +45,7 @@ class ball {
     this.x = x
     this.y = y
     this.color = color
-    this.xsp = 1
+    this.xsp = -1
     this.ysp = 1
   }
   draw() {
@@ -99,7 +99,7 @@ class ball {
 let Ball = new ball(area.width / 2, area.height / 2, "#fff")
 
 let Player1 = new paddle(20, area.height / 2)
-let Player2 = new paddle(area.width - 20, area.height / 2)
+let Player2 = new paddle(area.width - 30, area.height / 2)
 
 function clearAll() {
   ctx.clearRect(0, 0, area.width, area.height)
