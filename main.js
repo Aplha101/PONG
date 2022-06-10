@@ -49,8 +49,9 @@ class ball {
     this.x = x
     this.y = y
     this.color = color
-    this.xsp = -1
-    this.ysp = 1
+    this.xsp = 1
+    this.ysp = 0
+    this.speed = 7
   }
   draw() {
     ctx.fillStyle = this.color
@@ -89,41 +90,58 @@ class ball {
       this.y = area.height / 2
     }
   }
-  cornerCollision(a, b) {
-    let distX = Math.abs(this.x - a.x - 10 / 2);
-    let distY = Math.abs(this.y - a.y - 80 / 2);
-    let A = Math.abs(this.x - b.x - 10 / 2);
-    let B = Math.abs(this.y - b.y - 80 / 2);
-    var dx = distX - 10 / 2;
-    var dy = distY - 80 / 2;
-    return (dx * dx + dy * dy <= (10 * 10));
-  }
+  //collisiondetection 
+  collision(b, p) {
+    p.top = p.y;
+    p.bottom = p.y + 60
+    p.left = p.x;
+    p.right = p.x + 10
 
+    b.top = b.y - 10
+    b.bottom = b.y + 10
+    b.left = b.x - 10
+    b.right = b.x + 10
+
+    return p.left < b.right && p.top < b.bottom && p.right > b.left && p.bottom > b.top;
+  }
+  coll(b, p) {
+    if (collision(b, p)) {
+      let collidePoint = (b.y - (p.y + 80 / 2))
+      collidePoint /= (80/2)
+      let angle = (Math.PI/4) * collidePoint
+      let direction = (ball.x + 10 < area.width/2) ? 1 : -1 
+      b.xsp = direction * b.speed * Math.cos(angle)
+      b.ysp = b.speed * Math.sin(angle)
+      b.speed += 0.01
+    }
+  }
 }
 
 let Ball = new ball(area.width / 2, area.height / 2, "#fff")
 
 let Player1 = new paddle(20, area.height / 2)
 
-
 let Player2 = new paddle(area.width - 30, area.height / 2)
 
 function clearAll() {
   ctx.clearRect(0, 0, area.width, area.height)
 }
-
+let p = (Ball.x + 10 < area.width/2) ? Player1 : Player2
 
 setInterval(() => {
+
   clearAll()
   Ball.update()
   Ball.draw()
   Ball.bounce()
   Ball.restart()
-  Ball.paddleBounce(Player1, Player2)
+  Ball.collision(Ball , p)
+  Ball.coll(Ball , p)
+  //Ball.paddleBounce(Player1, Player2)
 
-  if (Ball.cornerCollision(Player1, Player2)) {
-    Ball.xsp *= -1
-  }
+  //if (Ball.cornerCollision(Player1, Player2)) {
+   // Ball.xsp *= -1
+  //}
   Player1.draw()
   Player1.update()
   Player2.update()
