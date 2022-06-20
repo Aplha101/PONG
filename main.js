@@ -1,12 +1,16 @@
 const area = document.getElementById('canvas')
 const html = document.getElementById('html')
+
 const p1 = document.getElementById('p1')
 const p2 = document.getElementById("p2")
-let ctx = area.getContext('2d')
+
 const p1up = document.getElementById('p1up')
-const p2up = document.getElementById('p2up')
 const p1down = document.getElementById('p1down')
-const p2down = document.getElementById('p2down')
+
+const p2up = document.getElementById('p2up')
+const p2down = document.getElementById("p2down")
+
+let ctx = area.getContext('2d')
 
 area.style = "background:#556479;"
 
@@ -26,13 +30,16 @@ function dist(x, y, posx, posy) {
   return Math.sqrt(Math.pow(x - posx, 2) + Math.pow(y - posy, 2))
 }
 
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max)
+}
+
 class paddle {
   constructor(x, y) {
     this.x = x
     this.y = y
     this.ysp = 0
   }
-
   draw() {
     ctx.fillStyle = "#fff"
     ctx.beginPath()
@@ -42,6 +49,21 @@ class paddle {
   update() {
     this.y += this.ysp
   }
+  limit(){
+    this.y = clamp(this.y , 0 , area.height - 80)
+  }
+  move(up , down){
+    up.addEventListener("click" , (e) => {
+    if(e.isTrusted === true){
+      this.ysp = -1
+    }
+    })
+    down.addEventListener("click" , (e) => {
+      if(e.isTrusted===true){
+        this.ysp = 1
+      }
+    })
+  }
 }
 
 class ball {
@@ -50,8 +72,7 @@ class ball {
     this.y = y
     this.color = color
     this.xsp = 1
-    this.ysp = 0
-    this.speed = 7
+    this.ysp = -1
   }
   draw() {
     ctx.fillStyle = this.color
@@ -90,60 +111,45 @@ class ball {
       this.y = area.height / 2
     }
   }
-  //collisiondetection 
-  collision(b, p) {
-    p.top = p.y;
-    p.bottom = p.y + 60
-    p.left = p.x;
-    p.right = p.x + 10
-
-    b.top = b.y - 10
-    b.bottom = b.y + 10
-    b.left = b.x - 10
-    b.right = b.x + 10
-
-    return p.left < b.right && p.top < b.bottom && p.right > b.left && p.bottom > b.top;
-  }
-  coll(b, p) {
-    if (collision(b, p)) {
-      let collidePoint = (b.y - (p.y + 80 / 2))
-      collidePoint /= (80/2)
-      let angle = (Math.PI/4) * collidePoint
-      let direction = (ball.x + 10 < area.width/2) ? 1 : -1 
-      b.xsp = direction * b.speed * Math.cos(angle)
-      b.ysp = b.speed * Math.sin(angle)
-      b.speed += 0.01
-    }
+  cornerCollision(a, b) {
+    let distX = Math.abs(this.x - a.x - 10 / 2);
+    let distY = Math.abs(this.y - a.y - 80 / 2);
+    let A = Math.abs(this.x - b.x - 10 / 2);
+    let B = Math.abs(this.y - b.y - 80 / 2);
+    var dx = distX - 10 / 2;
+    var dy = distY - 80 / 2;
+    return (dx * dx + dy * dy <= (10 * 10));
   }
 }
 
 let Ball = new ball(area.width / 2, area.height / 2, "#fff")
 
-let Player1 = new paddle(20, area.height / 2)
-
-let Player2 = new paddle(area.width - 30, area.height / 2)
+let Player1 = new paddle(20, (area.height / 2) -40 ) 
+let Player2 = new paddle(area.width - 20, (area.height / 2) - 40)
 
 function clearAll() {
   ctx.clearRect(0, 0, area.width, area.height)
 }
-let p = (Ball.x + 10 < area.width/2) ? Player1 : Player2
+
 
 setInterval(() => {
-
   clearAll()
   Ball.update()
   Ball.draw()
   Ball.bounce()
   Ball.restart()
-  Ball.collision(Ball , p)
-  Ball.coll(Ball , p)
-  //Ball.paddleBounce(Player1, Player2)
+  Ball.paddleBounce(Player1, Player2)
 
-  //if (Ball.cornerCollision(Player1, Player2)) {
-   // Ball.xsp *= -1
-  //}
-  Player1.draw()
+  if (Ball.cornerCollision(Player1, Player2)) {
+    Ball.xsp *= -1
+  }
   Player1.update()
+  Player1.draw()
+  Player1.limit()
+  Player1.move(p1up, p1down)
+  
+  Player2.limit()
+  Player2.move(p2up , p2down)
   Player2.update()
   Player2.draw()
 })
